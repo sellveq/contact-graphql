@@ -1,13 +1,42 @@
 {
-    "name": "scandipwa/contact-graphql",
-    "description": "Contact-specific modifications for ScandiPWA",
-    "type": "magento2-theme",
+    "name": "selveq/contact-graphql",
+    "description": "Magento 2 Contact GraphQl extension for ScandiPWA theme",
+    "type": "magento2-module",
+    "version": "2.0.0",
     "license": [
         "OSL-3.0"
     ],
+    "authors": [
+        {
+            "name": "Scandiweb",
+            "homepage": "https://scandiweb.com",
+            "role": "Original author"
+        },
+        {
+            "name": "Selveq",
+            "homepage": "https://selveq.com",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/selveq/contact-graphql/issues",
+        "source": "https://github.com/selveq/contact-graphql"
+    },
     "require": {
-        "magento/framework": "*",
-        "magento/module-contact": "*"
+        "php": "^8.3",
+        "magento/framework": "^103.0",
+        "magento/module-contact": "^100.4",
+        "magento/module-cms": "^104.0",
+        "magento/module-config": "^101.2",
+        "magento/module-store": "^101.1",
+        "magento/module-store-graph-ql": "^100.4",
+        "magento/module-graph-ql": "^100.4",
+        "magento/module-re-captcha-webapi-api": "^1.0",
+        "magento/module-re-captcha-ui": "^1.1",
+        "magento/module-re-captcha-validation-api": "^1.1"
+    },
+    "replace": {
+        "scandipwa/contact-graphql": "*"
     },
     "autoload": {
         "files": [
@@ -16,5 +45,11 @@
         "psr-4": {
             "ScandiPWA\\ContactGraphQl\\": "src/"
         }
+    },
+    "archive": {
+        "exclude": [
+            "/.github",
+            "/.gitignore"
+        ]
     }
 }

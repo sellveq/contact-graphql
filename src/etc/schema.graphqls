@@ -1,20 +1,20 @@
 ##
-# ScandiPWA - Progressive Web App for Magento
+# ScandiPWA_ContactGraphQl
 #
-# Copyright © Scandiweb, Inc. All rights reserved.
+# @category    ScandiPWA
+# @package     ScandiPWA_ContactGraphQl
+# @copyright   Copyright © Scandiweb, Inc. All rights reserved.
+# @copyright   Modifications © Selveq. All rights reserved.
+# @license     OSL-3.0 (Open Software License ("OSL") v. 3.0)
 # See LICENSE for license details.
-#
-# @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
-# @package scandipwa/base-theme
-# @link https://github.com/scandipwa/base-theme
 ##
 
 type Query {
-    contactPageConfig: ContactPageConfig @doc(description: "Contact Us page config") @resolver(class: "ScandiPWA\\ContactGraphQl\\Model\\Resolver\\ContactPageConfig")
+    contactPageConfig: ContactPageConfig @resolver(class: "ScandiPWA\\ContactGraphQl\\Model\\Resolver\\ContactPageConfig") @doc(description: "Contact Us page config") @cache(cacheIdentity: "ScandiPWA\\ContactGraphQl\\Model\\Resolver\\ContactPageConfig\\Identity")
 }
 
 type Mutation {
-    contactForm(contact: ContactForm!): ContactFormResponse @doc(description: "Send contact form") @resolver(class:"ScandiPWA\\ContactGraphQl\\Model\\Resolver\\Contact")
+    contactForm(contact: ContactForm!): ContactFormResponse @resolver(class: "ScandiPWA\\ContactGraphQl\\Model\\Resolver\\Contact") @doc(description: "Send contact form")
 }
 
 input ContactForm {

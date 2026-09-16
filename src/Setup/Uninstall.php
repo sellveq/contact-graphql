@@ -1,31 +1,55 @@
 <?php
 
+/**
+ * @category    ScandiPWA
+ * @package     ScandiPWA_ContactGraphQl
+ * @copyright   Copyright © Scandiweb, Inc. All rights reserved.
+ * @copyright   Modifications © Selveq. All rights reserved.
+ * @license     OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * See LICENSE for license details.
+ */
+
 namespace ScandiPWA\ContactGraphQl\Setup;
 
-use Magento\Cms\Model\BlockRepository;
+use Magento\Cms\Api\BlockRepositoryInterface;
 use Magento\Config\Model\ResourceModel\Config;
-use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UninstallInterface;
+use ScandiPWA\ContactGraphQl\Setup\Patch\Data\CreateContactUsBlock;
 
-class Uninstall implements  UninstallInterface
+class Uninstall implements UninstallInterface
 {
-    private $blockRepository;
+    /**
+     * @param BlockRepositoryInterface $blockRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param Config $configResource
+     */
+    public function __construct(
+        private readonly BlockRepositoryInterface $blockRepository,
+        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+        private readonly Config $configResource
+    ) {}
 
-    public function __construct(BlockRepository $blockRepository)
-    {
-        $this->blockRepository = $blockRepository;
-    }
-
+    /**
+     * {@inheritdoc}
+     * @throws LocalizedException
+     */
     public function uninstall(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
 
-        $this->blockRepository->deleteById('contact_us_page_block');
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter('identifier', CreateContactUsBlock::BLOCK_IDENTIFIER)
+            ->create();
 
-        $resourceConfig = ObjectManager::getInstance()->get(Config::class);
-        $resourceConfig->deleteConfig('content_customization/contact_us_content/contact_us_cms_block');
+        foreach ($this->blockRepository->getList($searchCriteria)->getItems() as $block) {
+            $this->blockRepository->delete($block);
+        }
+
+        $this->configResource->deleteConfig(CreateContactUsBlock::CONFIG_PATH);
 
         $setup->endSetup();
     }
